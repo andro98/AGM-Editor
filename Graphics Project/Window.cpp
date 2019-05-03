@@ -7,7 +7,7 @@
 #include "resource1.h"
 #include"Editor.h"
 #include"Clipping.h"
-#include "Ellipse.h"
+#include"Ellipse.h"
 
 using namespace std;
 
@@ -109,6 +109,7 @@ LRESULT CALLBACK WindowProcedure (HWND hwnd , UINT message , WPARAM wParam , LPA
 	PAINTSTRUCT p;
 	COLORREF color = RGB (255 , 0 , 0);
 	Clipping myClipp;
+	AGMEllipse ellipse;
 	
 	HDC hdc;
 	switch ( message )                  /* handle the messages */
@@ -130,6 +131,9 @@ LRESULT CALLBACK WindowProcedure (HWND hwnd , UINT message , WPARAM wParam , LPA
 			counter = 0;
 		}*/
 		//DrawmidpointEllipse(hdc, 10, 40, 200, 100, color);
+		ellipse.drawEllipseMidPoint (hdc , 100 , 200 , 500 , 200 , color);
+		//ellipse.drawEllipsePolar (hdc , 100 , 200 , 500 , 200 , color);
+		ellipse.drawEllipseDirect (hdc , 100 , 200 , 500 , 200 , color);
 		EndPaint (hwnd , &p);
 		InvalidateRect (hwnd , NULL , FALSE);//to paint more points and remain the prev points
 		break;
