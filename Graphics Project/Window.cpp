@@ -7,6 +7,8 @@
 #include "resource1.h"
 #include"Editor.h"
 #include"Clipping.h"
+#include "Ellipse.h"
+
 using namespace std;
 
 
@@ -40,7 +42,9 @@ int nShowCmd)
 	wcex.hCursor = LoadCursor (hInstance , IDC_ARROW); // Window cursor
 	wcex.lpfnWndProc = WindowProcedure;		// Window procedure associated to this window class.
 	wcex.hInstance = hInstance;	// The application instance.
-	wcex.hIcon = LoadIcon (hInstance , MAKEINTRESOURCE (IDB_PNG1));	wcex.lpszMenuName = MAKEINTRESOURCE (MY_MENU);
+	wcex.hIcon = LoadIcon (hInstance , MAKEINTRESOURCE (IDB_PNG1));
+	wcex.lpszMenuName = MAKEINTRESOURCE (MY_MENU);
+
 
 
 	// Register window and ensure registration success.
@@ -105,6 +109,7 @@ LRESULT CALLBACK WindowProcedure (HWND hwnd , UINT message , WPARAM wParam , LPA
 	PAINTSTRUCT p;
 	COLORREF color = RGB (255 , 0 , 0);
 	Clipping myClipp;
+	
 	HDC hdc;
 	switch ( message )                  /* handle the messages */
 	{
@@ -119,11 +124,12 @@ LRESULT CALLBACK WindowProcedure (HWND hwnd , UINT message , WPARAM wParam , LPA
 	case WM_PAINT:
 		hdc = BeginPaint (hwnd , &p);
 		///HandleMenuItem (hdc);  myEditor.clip.DrawRectangle (hdc);
-		if ( Points.size () == 4 ){
+		/*if ( Points.size () == 4 ){
 			myClipp.DrawInitialPolygon (hdc , Points);
 			myClipp.PolygonClip (hdc , Points);
 			counter = 0;
-		}
+		}*/
+		//DrawmidpointEllipse(hdc, 10, 40, 200, 100, color);
 		EndPaint (hwnd , &p);
 		InvalidateRect (hwnd , NULL , FALSE);//to paint more points and remain the prev points
 		break;
