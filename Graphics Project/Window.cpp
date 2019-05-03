@@ -4,12 +4,16 @@
 
 #include <windows.h>
 #include "resource1.h"
+#include"Editor.h"
 using namespace std;
 
 
 /*  Declare Windows procedure  */
 LRESULT CALLBACK WindowProcedure (HWND , UINT , WPARAM , LPARAM);
+void HandleMenuItem ();
 
+int menuItemsId;
+Editor myEditor;
 
 int
 APIENTRY
@@ -31,7 +35,7 @@ int nShowCmd)
 	wcex.hCursor = LoadCursor (hInstance , IDC_ARROW); // Window cursor
 	wcex.lpfnWndProc = WindowProcedure;		// Window procedure associated to this window class.
 	wcex.hInstance = hInstance;	// The application instance.
-	wcex.hIcon = LoadIcon (hInstance , MAKEINTRESOURCE (IDB_PNG1));
+	wcex.hIcon = LoadIcon (hInstance , MAKEINTRESOURCE (IDB_PNG1));	wcex.lpszMenuName = MAKEINTRESOURCE (MY_MENU);
 
 
 	// Register window and ensure registration success.
@@ -101,6 +105,10 @@ LRESULT CALLBACK WindowProcedure (HWND hwnd , UINT message , WPARAM wParam , LPA
 	case WM_DESTROY:
 		PostQuitMessage (0);       /* send a WM_QUIT to the message queue */
 		break;
+
+	case WM_COMMAND:
+		menuItemsId = LOWORD (wParam);
+
 	case WM_PAINT:
 
 		break;
@@ -118,4 +126,53 @@ LRESULT CALLBACK WindowProcedure (HWND hwnd , UINT message , WPARAM wParam , LPA
 	}
 
 	return 0;
+}
+
+void HandleMenuItem ()
+{
+	switch ( menuItemsId )
+	{
+		//Exit
+		case 4001:
+			break;
+		//ID_LINE_DDA
+		case 4002:
+			break;
+		//ID_LINE_MIDPOINT
+		case 4003:
+			break;
+		//ID_LINE_PARAMETRIC
+		case 4004:
+			break;
+		//ID_ELLIPSE_DIRECT
+		case 4005:
+			break;
+		//ID_ELLIPSE_POLAR
+		case 4006:
+			break;
+		//ID_ELLIPSE_MIDPOINT
+		case 4007:
+			break;
+		//ID_CLIPPING_POLYGON
+		case 4008:
+			break;
+		//ID_CURVES_BEZIER
+		case 4009:
+			break;
+		//ID_CURVES_HERMITE
+		case 40010:
+			break;
+		//ID_CURVES_SPLINES
+		case 40011:
+			break;
+		//ID_EDIT_SAVE
+		case 40012:
+			break;
+		//ID_EDIT_LOAD
+		case 40013:
+			break;
+		default:
+			break;
+	}
+
 }
