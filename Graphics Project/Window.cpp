@@ -3,17 +3,22 @@
 #endif
 
 #include <windows.h>
+#include<vector>
 #include "resource1.h"
 #include"Editor.h"
+#include"Clipping.h"
 using namespace std;
 
 
 /*  Declare Windows procedure  */
 LRESULT CALLBACK WindowProcedure (HWND , UINT , WPARAM , LPARAM);
-void HandleMenuItem ();
+void HandleMenuItem (HDC);
 
 int menuItemsId;
 Editor myEditor;
+
+int counter;
+vector<Point> Points;
 
 int
 APIENTRY
@@ -98,7 +103,8 @@ int nShowCmd)
 LRESULT CALLBACK WindowProcedure (HWND hwnd , UINT message , WPARAM wParam , LPARAM lParam)
 {
 	PAINTSTRUCT p;
-	COLORREF color = RGB (0 , 0 , 0);
+	COLORREF color = RGB (255 , 0 , 0);
+	Clipping myClipp;
 	HDC hdc;
 	switch ( message )                  /* handle the messages */
 	{
@@ -108,19 +114,28 @@ LRESULT CALLBACK WindowProcedure (HWND hwnd , UINT message , WPARAM wParam , LPA
 
 	case WM_COMMAND:
 		menuItemsId = LOWORD (wParam);
+		//Points.clear ();
 
 	case WM_PAINT:
-
-		break;
-	case WM_LBUTTONDOWN:
-		break;
-
-	case WM_LBUTTONUP:
 		hdc = BeginPaint (hwnd , &p);
-		
+		///HandleMenuItem (hdc);  myEditor.clip.DrawRectangle (hdc);
+		if ( Points.size () == 4 ){
+			myClipp.DrawInitialPolygon (hdc , Points);
+			myClipp.PolygonClip (hdc , Points);
+			counter = 0;
+		}
 		EndPaint (hwnd , &p);
 		InvalidateRect (hwnd , NULL , FALSE);//to paint more points and remain the prev points
 		break;
+
+	case WM_LBUTTONDOWN:
+		if ( counter < 4 ){
+			Point point (LOWORD (lParam) , HIWORD (lParam));
+			Points.push_back (point);
+			counter++;
+		}
+		break;
+
 	default:                      /* for messages that we don't deal with */
 		return DefWindowProc (hwnd , message , wParam , lParam);
 	}
@@ -128,51 +143,58 @@ LRESULT CALLBACK WindowProcedure (HWND hwnd , UINT message , WPARAM wParam , LPA
 	return 0;
 }
 
-void HandleMenuItem ()
+void HandleMenuItem (HDC hdc)
 {
 	switch ( menuItemsId )
 	{
 		//Exit
-		case 4001:
-			break;
+	case 4001:
+		break;
 		//ID_LINE_DDA
-		case 4002:
-			break;
+	case 4002:
+		break;
 		//ID_LINE_MIDPOINT
-		case 4003:
-			break;
+	case 4003:
+		break;
 		//ID_LINE_PARAMETRIC
-		case 4004:
-			break;
+	case 4004:
+		break;
 		//ID_ELLIPSE_DIRECT
-		case 4005:
-			break;
+	case 4005:
+		break;
 		//ID_ELLIPSE_POLAR
-		case 4006:
-			break;
+	case 4006:
+		break;
 		//ID_ELLIPSE_MIDPOINT
-		case 4007:
-			break;
+	case 4007:
+		break;
 		//ID_CLIPPING_POLYGON
-		case 4008:
-			break;
+	case 4008:
+		/*myEditor.clip.DrawRectangle (hdc);
+		if ( Points.size () == 4 ){
+			myEditor.clip.DrawInitialPolygon (hdc , Points);
+			myEditor.clip.PolygonClip (hdc , Points);
+			counter = 0;
+		}*/
+
+		break;
 		//ID_CURVES_BEZIER
-		case 4009:
-			break;
+	case 4009:
+		break;
 		//ID_CURVES_HERMITE
-		case 40010:
-			break;
+	case 40010:
+		break;
 		//ID_CURVES_SPLINES
-		case 40011:
-			break;
+	case 40011:
+		break;
 		//ID_EDIT_SAVE
-		case 40012:
-			break;
+	case 40012:
+		break;
 		//ID_EDIT_LOAD
-		case 40013:
-			break;
-		default:
-			break;
+	case 40013:
+		break;
+	default:
+		break;
 	}
 
 }

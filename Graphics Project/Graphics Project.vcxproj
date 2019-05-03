@@ -85,10 +85,12 @@
     <ClCompile Include="Window.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="Clipping.h" />
     <ClInclude Include="Curves.h" />
     <ClInclude Include="Editor.h" />
     <ClInclude Include="Ellipse.h" />
     <ClInclude Include="Line.h" />
+    <ClInclude Include="Point.h" />
     <ClInclude Include="resource1.h" />
   </ItemGroup>
   <ItemGroup>
