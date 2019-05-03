@@ -24,9 +24,6 @@
     <ClCompile Include="Line.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="Ellipse.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="Curves.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
