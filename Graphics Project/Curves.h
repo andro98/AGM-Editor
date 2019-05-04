@@ -43,9 +43,9 @@ public:
 
 	}
 	Vector4 GetHermiteCoeff(double x0, double s0, double x1, double s1);
-	void drawCurveBezier(HDC hdc, Point& P0, Point& P1, Point& P2, Point& P3, int numpoints);
-	void drawCurvesHermite(HDC hdc, Point& P0, Point& T0, Point& P1, Point& T1, int numpoints);
-	void drawCurvesSplines(HDC hdc, Point P[], int n, double c, int numpix);
+	void drawCurveBezier(HDC hdc, Point& p1, Point& p2, Point& p3, Point& p4, COLORREF color);
+	void drawCurvesHermite(HDC hdc, Point& p1, Point& p2, Point& p3, COLORREF color);
+	void drawCurvesSplines(HDC hdc, Point& P0, Point& P1, Point& P2, Point& P3);
 	~Curves(){
 
 	}

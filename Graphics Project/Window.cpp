@@ -125,7 +125,7 @@ LRESULT CALLBACK WindowProcedure (HWND hwnd , UINT message , WPARAM wParam , LPA
 
 	case WM_PAINT:
 		hdc = BeginPaint (hwnd , &p);
-		HandleMenuItem (hwnd,hdc,color
+		HandleMenuItem(hwnd, hdc, color);
 		EndPaint (hwnd , &p);
 		InvalidateRect (hwnd , NULL , FALSE);//to paint more points and remain the prev points
 		break;
@@ -195,7 +195,7 @@ bool HandleMenuItem (HWND hwnd , HDC hdc , COLORREF color)
 		
 	case ID_ELLIPSE_DIRECT:
 		if ( Points.size () == 2 ){
-			ellipse.drawEllipseDirect(hdc , Points[0].x , Points[0].y , Points[1].x , Points[1].y , color);
+			ellipse.drawEllipseDirect(hdc , Points[0].x , Points[0].y , Points[1].x , Points[1].y , color,AllPoints);
 			counter = 0;
 			Points.clear ();
 			return true;
@@ -206,7 +206,7 @@ bool HandleMenuItem (HWND hwnd , HDC hdc , COLORREF color)
 
 	case ID_ELLIPSE_POLAR:
 		if ( Points.size () == 2 ){
-			ellipse.drawEllipsePolar (hdc , Points[0].x , Points[0].y , Points[1].x , Points[1].y , color);
+			ellipse.drawEllipsePolar(hdc, Points[0].x, Points[0].y, Points[1].x, Points[1].y, color, AllPoints);
 			counter = 0;
 			Points.clear ();
 			return true;
@@ -216,7 +216,7 @@ bool HandleMenuItem (HWND hwnd , HDC hdc , COLORREF color)
 		}
 	case ID_ELLIPSE_MIDPOINT:
 		if ( Points.size () == 2 ){
-			ellipse.drawEllipseMidPoint (hdc , Points[0].x , Points[0].y , Points[1].x , Points[1].y , color);
+			ellipse.drawEllipseMidPoint(hdc, Points[0].x, Points[0].y, Points[1].x, Points[1].y, color, AllPoints);
 			counter = 0;
 			Points.clear ();
 			return true;
@@ -238,8 +238,8 @@ bool HandleMenuItem (HWND hwnd , HDC hdc , COLORREF color)
 		}
 		//ID_CURVES_BEZIER
 	case ID_CURVES_BEZIER:
-		if (Points.size() ==4){
-			myCurve.drawCurveBezier(hdc, Points[0], Points[1], Points[2], Points[3],3);
+		if (Points.size() == 4){
+			myCurve.drawCurveBezier(hdc, Points[0], Points[1], Points[2], Points[3], color);
 			counter = 0;
 			Points.clear();
 			return true;
@@ -248,8 +248,8 @@ bool HandleMenuItem (HWND hwnd , HDC hdc , COLORREF color)
 			return false;
 		}
 	case ID_CURVES_HERMITE:
-		if (Points.size() ==  4){
-			myCurve.drawCurvesHermite(hdc, Points[0], Points[1], Points[2], Points[3], 3);
+		if (Points.size() ==  3){
+			myCurve.drawCurvesHermite(hdc, Points[0], Points[1], Points[2],color);
 			counter = 0;
 			Points.clear();
 			return true;
@@ -276,7 +276,7 @@ void DrawFromVector(HDC hdc, vector<Point>&allpoint, COLORREF c)
 	Point p;
 	for (int i = 0; i < allpoint.size(); i++)
 	{
-		p = allpoint.pop_back;
+		p = allpoint[i];
 		SetPixel(hdc, p.x, p.y, c);
 	}
 }

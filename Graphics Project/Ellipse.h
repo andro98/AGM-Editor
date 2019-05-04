@@ -2,7 +2,8 @@
 #include <windows.h>
 #include <cmath>
 #include<vector>
-#include"Point.h"
+#include "Point.h"
+
 using namespace std;
 
 class AGMEllipse
