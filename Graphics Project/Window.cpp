@@ -3,6 +3,7 @@
 #endif
 
 #include <windows.h>
+#include<fstream>
 #include<vector>
 #include "resource1.h"
 #include"Editor.h"
@@ -19,12 +20,16 @@ using namespace std;
 /*  Declare Windows procedure  */
 LRESULT CALLBACK WindowProcedure (HWND , UINT , WPARAM , LPARAM);
 bool HandleMenuItem (HWND , HDC , COLORREF);
-
+void DrawFromVector(HDC hdc, COLORREF c);
+void writeToFile();
+void readFromFile();
 int menuItemsId;
 Editor myEditor;
 
 int counter;
 vector<Point> Points;
+bool flag = true;
+bool firstime = true;
 vector<Point> AllPoints;
 int
 APIENTRY
@@ -34,6 +39,8 @@ HINSTANCE hPrevInstance ,
 LPWSTR lpCmdLine ,
 int nShowCmd)
 {
+
+	
 	// Setup window class attributes.
 	WNDCLASSEX wcex;
 	ZeroMemory (&wcex , sizeof( wcex ));
@@ -117,6 +124,7 @@ LRESULT CALLBACK WindowProcedure (HWND hwnd , UINT message , WPARAM wParam , LPA
 	switch ( message )                  /* handle the messages */
 	{
 	case WM_DESTROY:
+		
 		PostQuitMessage (0);       /* send a WM_QUIT to the message queue */
 		break;
 
@@ -262,21 +270,71 @@ bool HandleMenuItem (HWND hwnd , HDC hdc , COLORREF color)
 		break;
 		//ID_EDIT_SAVE
 	case ID_EDIT_SAVE:
-		break;
+		if (flag){
+			writeToFile();
+			flag = false;
+		}
+		return true;
 		//ID_EDIT_LOAD
 	case ID_EDIT_LOAD:
-		break;
+		if (!flag || firstime){
+			readFromFile();
+			DrawFromVector(hdc, color);
+			flag = true;
+			firstime = false;
+		}
+	
+
+		return true;
 	default:
 		return false;
 	}
 
 }
-void DrawFromVector(HDC hdc, vector<Point>&allpoint, COLORREF c)
+void DrawFromVector(HDC hdc, COLORREF c)
 {
 	Point p;
-	for (int i = 0; i < allpoint.size(); i++)
+	for (int i = 0; i < AllPoints.size(); i++)
 	{
-		p = allpoint[i];
+		p = AllPoints[i];
 		SetPixel(hdc, p.x, p.y, c);
 	}
+}
+
+void writeToFile()
+{
+	fstream file;
+	file.open("myWindow.bin", ios::binary | ios::out);
+
+	if (!file)return;
+
+	for (int i = 0; i < AllPoints.size(); i++){
+		Point temp = AllPoints[i];
+		file.write((char*)&temp.x, sizeof(int));
+		file.write((char*)&temp.y, sizeof(int));
+	}
+	file.close();
+}
+
+void readFromFile(){
+	fstream file;
+	file.open("myWindow.bin", ios::binary | ios::in);
+
+	if (!file)return;
+
+	while (!file.eof()){
+		Point temp;
+		int xa = 0, ya = 0;
+		file.read((char*)&xa, sizeof(int));
+		file.read((char*)&ya, sizeof(int));
+		AllPoints.push_back(Point(xa,ya));
+	}
+
+
+	/*for (int i = 0; i < AllPoints.size(); i++){
+		Point temp = AllPoints[i];
+		file.write((char*)&temp.x, sizeof(int));
+		file.write((char*)&temp.y, sizeof(int));
+	}*/
+	file.close();
 }
