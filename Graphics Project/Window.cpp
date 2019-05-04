@@ -109,7 +109,7 @@ LRESULT CALLBACK WindowProcedure (HWND hwnd , UINT message , WPARAM wParam , LPA
 {
 	PAINTSTRUCT p;
 	COLORREF color = RGB (255 , 0 , 0);
-
+	HBITMAP bmpExercising;
 	HDC hdc;
 	switch ( message )                  /* handle the messages */
 	{
