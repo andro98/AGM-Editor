@@ -8,8 +8,11 @@
 #include"Editor.h"
 #include"Clipping.h"
 #include"Ellipse.h"
+#include "Point.h"
+
 #include"Line.h"
 #include"Curves.h"
+
 using namespace std;
 
 
@@ -22,7 +25,7 @@ Editor myEditor;
 
 int counter;
 vector<Point> Points;
-
+vector<Point> AllPoints;
 int
 APIENTRY
 wWinMain (
@@ -122,7 +125,7 @@ LRESULT CALLBACK WindowProcedure (HWND hwnd , UINT message , WPARAM wParam , LPA
 
 	case WM_PAINT:
 		hdc = BeginPaint (hwnd , &p);
-		HandleMenuItem (hwnd,hdc,color);
+		HandleMenuItem (hwnd,hdc,color
 		EndPaint (hwnd , &p);
 		InvalidateRect (hwnd , NULL , FALSE);//to paint more points and remain the prev points
 		break;
@@ -267,4 +270,13 @@ bool HandleMenuItem (HWND hwnd , HDC hdc , COLORREF color)
 		return false;
 	}
 
+}
+void DrawFromVector(HDC hdc, vector<Point>&allpoint, COLORREF c)
+{
+	Point p;
+	for (int i = 0; i < allpoint.size(); i++)
+	{
+		p = allpoint.pop_back;
+		SetPixel(hdc, p.x, p.y, c);
+	}
 }
