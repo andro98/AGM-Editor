@@ -3,11 +3,15 @@
 Curves::Curves(){
 
 }
-void Curves::drawCurveBezier(HDC hdc, Point& P0, Point& P1, Point& P2, Point& P3, COLORREF color){
+void Curves::drawCurveBezier(HDC hdc, Point& p1, Point& p2, Point& p3, Point& p4, COLORREF color){
 
-	Point T0(3 * (P1.x - P0.x), 3 * (P1.y - P0.y));
-	Point T1(3 * (P3.x - P2.x), 3 * (P3.y - P2.y));
-	drawCurvesHermite(hdc, P0, T0, P3, color);
+	double x, y;
+	for (double t = 0; t <= 1; t += 0.0001){
+
+		x = ((1 - t)*(1 - t)*(1 - t)*p1.x) + (3 * (1 - t)*(1 - t)*t*p2.x) + (3 * (1 - t)*t*t*p3.x) + (t*t*t*p4.x);
+		y = ((1 - t)*(1 - t)*(1 - t)*p1.y) + (3 * (1 - t)*(1 - t)*t*p2.y) + (3 * (1 - t)*t*t*p3.y) + (t*t*t*p4.y);
+		SetPixel(hdc, round(x), round(y), color);
+	}
 }
 
 void Curves::drawCurvesHermite(HDC hdc, Point& p1, Point& p2, Point& p3, COLORREF color){

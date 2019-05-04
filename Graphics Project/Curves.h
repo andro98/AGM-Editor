@@ -1,7 +1,7 @@
 #pragma once
 #include"Point.h"
 #include<Windows.h>
-
+#include<math.h>
 
 class Curves
 {
