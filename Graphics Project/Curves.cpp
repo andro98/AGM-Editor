@@ -11,7 +11,7 @@ double DotProduct(Vector4 & a, Vector4 & b) //multiplying a raw vector by a colu
 {
 	return a[0] * b[0] + a[1] * b[1] + a[2] * b[2] + a[3] * b[3];
 }
-void Curves::drawCurvesHermite(HDC hdc, Vector2& P0, Vector2& T0, Vector2& P1, Vector2& T1, int numpoints)
+void Curves::drawCurvesHermite(HDC hdc, Point& P0, Point& T0, Point& P1, Point& T1, int numpoints)
 {
 	Vector4 xcoeff = GetHermiteCoeff(P0.x, T0.x, P1.x, T1.x);
 	Vector4 ycoeff = GetHermiteCoeff(P0.y, T0.y, P1.y, T1.y);
@@ -24,16 +24,17 @@ void Curves::drawCurvesHermite(HDC hdc, Vector2& P0, Vector2& T0, Vector2& P1, V
 		for (int i = 2; i >= 0; i--)vt[i] = vt[i] * t;
 		int x = round(DotProduct(xcoeff, vt));
 		int y = round(DotProduct(ycoeff, vt));
-		if (t == 0)MoveToEx(hdc, x, y, NULL); else LineTo(hdc, x, y);
+		if (t == 0){ MoveToEx(hdc, x, y, NULL); }
+		else { LineTo(hdc, x, y); }
 	}
 }
-void Curves::drawCurvesSplines(HDC hdc, Vector2 P[], int n, double c, int numpix)
+void Curves::drawCurvesSplines(HDC hdc, Point P[], int n, double c, int numpix)
 {
 	double c1 = 1 - c;
-	Vector2 T0(c1 * (P[2].x - P[0].x), c1 * (P[2].y - P[0].y));
+	Point T0(c1 * (P[2].x - P[0].x), c1 * (P[2].y - P[0].y));
 	for (int i = 2; i < n - 1; i++)
 	{
-		Vector2 T1(c1 * (P[i + 1].x - P[i - 1].x), c1 * (P[i + 1].y - P[i - 1].y));
+		Point T1(c1 * (P[i + 1].x - P[i - 1].x), c1 * (P[i + 1].y - P[i - 1].y));
 		Curves::drawCurvesHermite(hdc, P[i - 1], T0, P[i], T1, numpix);
 		T0 = T1;
 	}
@@ -45,10 +46,10 @@ Vector4 Curves::GetHermiteCoeff(double x0, double s0, double x1, double s1)
 	Vector4 v(x0, s0, x1, s1);
 	return basis * v;
 }
-void Curves::drawCurveBezier(HDC hdc, Vector2& P0, Vector2& P1, Vector2& P2, Vector2& P3, int numpoints)
+void Curves::drawCurveBezier(HDC hdc, Point& P0, Point& P1, Point& P2, Point& P3, int numpoints)
 {
-	Vector2 T0(3 * (P1.x - P0.x), 3 * (P1.y - P0.y));
-	Vector2 T1(3 * (P3.x - P2.x), 3 * (P3.y - P2.y));
+	Point T0(3 * (P1.x - P0.x), 3 * (P1.y - P0.y));
+	Point T1(3 * (P3.x - P2.x), 3 * (P3.y - P2.y));
 	Curves::drawCurvesHermite(hdc, P0, T0, P3, T1, numpoints);
 }
 

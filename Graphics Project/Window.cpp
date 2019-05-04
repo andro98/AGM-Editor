@@ -236,7 +236,7 @@ bool HandleMenuItem (HWND hwnd , HDC hdc , COLORREF color)
 		//ID_CURVES_BEZIER
 	case ID_CURVES_BEZIER:
 		if (Points.size() ==4){
-			myCurve.drawCurveBezier(hdc, Points[0], Points[1], Points[2], Points[3] ,color);
+			myCurve.drawCurveBezier(hdc, Points[0], Points[1], Points[2], Points[3],3);
 			counter = 0;
 			Points.clear();
 			return true;
@@ -245,8 +245,8 @@ bool HandleMenuItem (HWND hwnd , HDC hdc , COLORREF color)
 			return false;
 		}
 	case ID_CURVES_HERMITE:
-		if (Points.size() ==  3){
-			myCurve.drawCurvesHermite(hdc, Points[0], Points[1], Points[2],color);
+		if (Points.size() ==  4){
+			myCurve.drawCurvesHermite(hdc, Points[0], Points[1], Points[2], Points[3], 3);
 			counter = 0;
 			Points.clear();
 			return true;

@@ -2,14 +2,9 @@
 #include "Windows.h"
 #include <vector>
 #include <cmath>
-struct Vector2
-{
-	double x, y;
-	Vector2(double a = 0, double b = 0)
-	{
-		x = a; y = b;
-	}
-};
+#include"Point.h"
+
+
 class Vector4
 {
 	double v[4];
@@ -44,12 +39,16 @@ public:
 class Curves
 {
 public:
-	Curves ();
+	Curves(){
+
+	}
 	Vector4 GetHermiteCoeff(double x0, double s0, double x1, double s1);
-	void drawCurveBezier (HDC hdc, Vector2& P0, Vector2& P1, Vector2& P2, Vector2& P3, int numpoints);
-	void drawCurvesHermite (HDC hdc, Vector2& P0, Vector2& T0, Vector2& P1, Vector2& T1, int numpoints);
-	void drawCurvesSplines (HDC hdc, Vector2 P[], int n, double c, int numpix);
-	~Curves ();
+	void drawCurveBezier(HDC hdc, Point& P0, Point& P1, Point& P2, Point& P3, int numpoints);
+	void drawCurvesHermite(HDC hdc, Point& P0, Point& T0, Point& P1, Point& T1, int numpoints);
+	void drawCurvesSplines(HDC hdc, Point P[], int n, double c, int numpix);
+	~Curves(){
+
+	}
 };
 
 
