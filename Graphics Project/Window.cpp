@@ -8,6 +8,9 @@
 #include"Editor.h"
 #include"Clipping.h"
 #include"Ellipse.h"
+#include "Point.h"
+
+
 
 using namespace std;
 
@@ -21,7 +24,7 @@ Editor myEditor;
 
 int counter;
 vector<Point> Points;
-
+vector<Point> AllPoints;
 int
 APIENTRY
 wWinMain (
@@ -131,7 +134,7 @@ LRESULT CALLBACK WindowProcedure (HWND hwnd , UINT message , WPARAM wParam , LPA
 			counter = 0;
 		}*/
 		//DrawmidpointEllipse(hdc, 10, 40, 200, 100, color);
-		ellipse.drawEllipseMidPoint (hdc , 0 , 0 , 500 , 200 , color);
+		ellipse.drawEllipseMidPoint(hdc, 0, 0, 500, 200, color, AllPoints);
 		//ellipse.drawEllipsePolar (hdc , 100 , 200 , 500 , 200 , color);
 		//ellipse.drawEllipseDirect (hdc , 100 , 200 , 500 , 200 , color);
 		EndPaint (hwnd , &p);
@@ -207,4 +210,13 @@ void HandleMenuItem (HDC hdc)
 		break;
 	}
 
+}
+void DrawFromVector(HDC hdc, vector<Point>&allpoint, COLORREF c)
+{
+	Point p;
+	for (int i = 0; i < allpoint.size(); i++)
+	{
+		p = allpoint.pop_back;
+		SetPixel(hdc, p.x, p.y, c);
+	}
 }
