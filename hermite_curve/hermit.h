@@ -45,7 +45,7 @@ public:
 		}
 	};
 	void Drawpoint(HDC hdc, int x, int y, int xc, int yc, COLORREF c);
-	void DrawHermiteCurve(HDC hdc, Vector2& P0, Vector2& T0, Vector2& P1, Vector2& T1, int numpoints, COLORREF color);
+	void DrawHermiteCurve(HDC hdc, Vector2& P0, Vector2& T0, Vector2& P1, Vector2& T1, int numpoints);
 	Vector4 GetHermiteCoeff(double x0, double s0, double x1, double s1);
 		~hermit();
 };

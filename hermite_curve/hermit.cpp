@@ -30,7 +30,7 @@ Vector4 hermit::GetHermiteCoeff(double x0, double s0, double x1, double s1)
 	return basis * v;
 }
 
-void hermit::DrawHermiteCurve(HDC hdc, Vector2& P0, Vector2& T0, Vector2& P1, Vector2& T1, int numpoints, COLORREF color)
+void hermit::DrawHermiteCurve(HDC hdc, Vector2& P0, Vector2& T0, Vector2& P1, Vector2& T1, int numpoints)
 {
 	Vector4 xcoeff = GetHermiteCoeff(P0.x, T0.x, P1.x, T1.x);
 	Vector4 ycoeff = GetHermiteCoeff(P0.y, T0.y, P1.y, T1.y);
