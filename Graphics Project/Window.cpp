@@ -149,7 +149,7 @@ bool HandleMenuItem (HWND hwnd , HDC hdc , COLORREF color)
 	Clipping myClipp;
 	AGMEllipse ellipse;	
 	Line myLine;
-	//Curves myCurve;
+	Curves myCurve;
 
 	switch ( menuItemsId )
 	{
@@ -235,10 +235,25 @@ bool HandleMenuItem (HWND hwnd , HDC hdc , COLORREF color)
 		}
 		//ID_CURVES_BEZIER
 	case ID_CURVES_BEZIER:
-		break;
-		//ID_CURVES_HERMITE
+		if (Points.size() ==4){
+			myCurve.drawCurveBezier(hdc, Points[0], Points[1], Points[2], Points[3] ,color);
+			counter = 0;
+			Points.clear();
+			return true;
+		}
+		else {
+			return false;
+		}
 	case ID_CURVES_HERMITE:
-		break;
+		if (Points.size() ==  3){
+			myCurve.drawCurvesHermite(hdc, Points[0], Points[1], Points[2],color);
+			counter = 0;
+			Points.clear();
+			return true;
+		}
+		else {
+			return false;
+		}
 		//ID_CURVES_SPLINES
 	case ID_CURVES_SPLINES:
 		break;
