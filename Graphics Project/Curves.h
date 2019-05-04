@@ -2,34 +2,12 @@
 class Curves
 {
 public:
-	virtual void drawCurve () const = 0;
+	Curves ();
+	void drawCurveBezier ();
+	void drawCurvesHermite ();
+	void drawCurvesSplines ();
+	~Curves ();
 };
 
 
-class CurvesBezier : public Curves
-{
-public:
-	virtual void drawCurve () const {			
-	
-	}
 
-};
-
-
-class CurvesHermite : public Curves
-{
-public:
-	virtual void drawCurve () const {
-
-	}
-
-};
-
-class CurvesSplines : public Curves
-{
-public:
-	virtual void drawCurve () const {
-
-	}
-
-};

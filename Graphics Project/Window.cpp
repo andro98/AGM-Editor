@@ -8,13 +8,14 @@
 #include"Editor.h"
 #include"Clipping.h"
 #include"Ellipse.h"
-
+#include"Line.h"
+#include"Curves.h"
 using namespace std;
 
 
 /*  Declare Windows procedure  */
 LRESULT CALLBACK WindowProcedure (HWND , UINT , WPARAM , LPARAM);
-void HandleMenuItem (HDC);
+bool HandleMenuItem (HWND , HDC , COLORREF);
 
 int menuItemsId;
 Editor myEditor;
@@ -108,9 +109,7 @@ LRESULT CALLBACK WindowProcedure (HWND hwnd , UINT message , WPARAM wParam , LPA
 {
 	PAINTSTRUCT p;
 	COLORREF color = RGB (255 , 0 , 0);
-	Clipping myClipp;
-	AGMEllipse ellipse;
-	
+
 	HDC hdc;
 	switch ( message )                  /* handle the messages */
 	{
@@ -119,31 +118,23 @@ LRESULT CALLBACK WindowProcedure (HWND hwnd , UINT message , WPARAM wParam , LPA
 		break;
 
 	case WM_COMMAND:
-		menuItemsId = LOWORD (wParam);
-		//Points.clear ();
+		menuItemsId = wParam;
 
 	case WM_PAINT:
 		hdc = BeginPaint (hwnd , &p);
-		///HandleMenuItem (hdc);  myEditor.clip.DrawRectangle (hdc);
-		/*if ( Points.size () == 4 ){
-			myClipp.DrawInitialPolygon (hdc , Points);
-			myClipp.PolygonClip (hdc , Points);
-			counter = 0;
-		}*/
-		//DrawmidpointEllipse(hdc, 10, 40, 200, 100, color);
-		//ellipse.drawEllipseMidPoint (hdc , 100 , 200 , 500 , 200 , color);
-		ellipse.drawEllipsePolar (hdc , 100 , 200 , 500 , 200 , color);
-		//ellipse.drawEllipseDirect (hdc , 100 , 200 , 500 , 200 , color);
+		HandleMenuItem (hwnd,hdc,color);
 		EndPaint (hwnd , &p);
 		InvalidateRect (hwnd , NULL , FALSE);//to paint more points and remain the prev points
 		break;
 
 	case WM_LBUTTONDOWN:
 		if ( counter < 4 ){
+
 			Point point (LOWORD (lParam) , HIWORD (lParam));
 			Points.push_back (point);
 			counter++;
 		}
+
 		break;
 
 	default:                      /* for messages that we don't deal with */
@@ -153,58 +144,112 @@ LRESULT CALLBACK WindowProcedure (HWND hwnd , UINT message , WPARAM wParam , LPA
 	return 0;
 }
 
-void HandleMenuItem (HDC hdc)
+bool HandleMenuItem (HWND hwnd , HDC hdc , COLORREF color)
 {
+	Clipping myClipp;
+	AGMEllipse ellipse;	
+	Line myLine;
+	//Curves myCurve;
+
 	switch ( menuItemsId )
 	{
-		//Exit
-	case 4001:
-		break;
-		//ID_LINE_DDA
-	case 4002:
-		break;
-		//ID_LINE_MIDPOINT
-	case 4003:
-		break;
-		//ID_LINE_PARAMETRIC
-	case 4004:
-		break;
-		//ID_ELLIPSE_DIRECT
-	case 4005:
-		break;
-		//ID_ELLIPSE_POLAR
-	case 4006:
-		break;
-		//ID_ELLIPSE_MIDPOINT
-	case 4007:
-		break;
-		//ID_CLIPPING_POLYGON
-	case 4008:
-		/*myEditor.clip.DrawRectangle (hdc);
-		if ( Points.size () == 4 ){
-			myEditor.clip.DrawInitialPolygon (hdc , Points);
-			myEditor.clip.PolygonClip (hdc , Points);
-			counter = 0;
-		}*/
 
-		break;
+	case ID_FILE_EXIT:	
+		DestroyWindow (hwnd);
+		return true;
+
+	case ID_LINE_DDA:	   
+		if ( Points.size () == 2 ){
+			myLine.drawLineDDA (hdc , Points[0].x , Points[0].y , Points[1].x , Points[1].y , color);
+			counter = 0;
+			Points.clear ();
+			return true;
+		}
+		else {
+			return false;
+		}
+	
+	case ID_LINE_MIDPOINT:
+		if ( Points.size () == 2 ){
+			myLine.drawLineMidPoint (hdc , Points[0].x , Points[0].y , Points[1].x , Points[1].y , color);
+			counter = 0;
+			Points.clear ();
+			return true;
+		}
+		else {
+			return false;
+		}
+	case ID_LINE_PARAMETRIC:
+		if ( Points.size () == 2 ){
+			myLine.drawLineParam (hdc , Points[0].x , Points[0].y , Points[1].x , Points[1].y , color);
+			counter = 0;
+			Points.clear ();
+			return true;
+		}
+		else {
+			return false;
+		}
+		
+	case ID_ELLIPSE_DIRECT:
+		if ( Points.size () == 2 ){
+			ellipse.drawEllipseDirect(hdc , Points[0].x , Points[0].y , Points[1].x , Points[1].y , color);
+			counter = 0;
+			Points.clear ();
+			return true;
+		}
+		else {
+			return false;
+		}
+
+	case ID_ELLIPSE_POLAR:
+		if ( Points.size () == 2 ){
+			ellipse.drawEllipsePolar (hdc , Points[0].x , Points[0].y , Points[1].x , Points[1].y , color);
+			counter = 0;
+			Points.clear ();
+			return true;
+		}
+		else {
+			return false;
+		}
+	case ID_ELLIPSE_MIDPOINT:
+		if ( Points.size () == 2 ){
+			ellipse.drawEllipseMidPoint (hdc , Points[0].x , Points[0].y , Points[1].x , Points[1].y , color);
+			counter = 0;
+			Points.clear ();
+			return true;
+		}
+		else {
+			return false;
+		}
+	case ID_CLIPPING_POLYGON:
+		myClipp.DrawRectangle (hdc);
+		if ( Points.size () == 4 ){
+			myClipp.DrawInitialPolygon (hdc , Points);
+			myClipp.PolygonClip (hdc , Points);
+			counter = 0;
+			Points.clear ();
+			return true;
+		}
+		else {
+			return false;
+		}
 		//ID_CURVES_BEZIER
-	case 4009:
+	case ID_CURVES_BEZIER:
 		break;
 		//ID_CURVES_HERMITE
-	case 40010:
+	case ID_CURVES_HERMITE:
 		break;
 		//ID_CURVES_SPLINES
-	case 40011:
+	case ID_CURVES_SPLINES:
 		break;
 		//ID_EDIT_SAVE
-	case 40012:
+	case ID_EDIT_SAVE:
 		break;
 		//ID_EDIT_LOAD
-	case 40013:
+	case ID_EDIT_LOAD:
 		break;
 	default:
-		break;
+		return false;
 	}
 
 }

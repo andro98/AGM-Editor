@@ -1,28 +1,20 @@
 #pragma once
+#include <windows.h>
+
 class Line
 {
 public:
-	virtual void draw () const = 0;
-};
+	Line ();
+	void drawLineDDA (HDC hdc , int x1 , int y1 , int x2 , int y2 , COLORREF c);
+	void drawLineMidPoint (HDC hdc , int x1 , int y1 , int x2 , int y2 , COLORREF c);
+	void drawLineParam (HDC hdc , int x1 , int y1 , int x2 , int y2 , COLORREF c);
 
-class LineDDA :public Line
-{
-	virtual void draw () const{
-
+	int Round (double x)
+	{
+		return (int)( x + 0.5 );
 	}
+	~Line ();
 };
 
-class LineMidPoint : public Line
-{
-	virtual void draw () const{
 
-	}
-};
-
-class LineParam : public Line
-{
-	virtual void draw () const{
-
-	}
-};
-
+								 
